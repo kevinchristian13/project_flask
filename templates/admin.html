@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Admin - Tambah Produk{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white fw-semibold">Tambah Produk Baru</div>
+      <div class="card-body">
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }} <!-- Token CSRF -->
+
+          <div class="mb-3">
+            {{ form.nama.label(class="form-label") }}
+            {{ form.nama(class="form-control" + (" is-invalid" if form.nama.errors else "")) }}
+            {% for err in form.nama.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.kategori.label(class="form-label") }}
+            {{ form.kategori(class="form-select") }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.harga.label(class="form-label") }}
+            {{ form.harga(class="form-control" + (" is-invalid" if form.harga.errors else "")) }}
+            {% for err in form.harga.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.stok.label(class="form-label") }}
+            {{ form.stok(class="form-control" + (" is-invalid" if form.stok.errors else "")) }}
+            {% for err in form.stok.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.deskripsi.label(class="form-label") }}
+            {{ form.deskripsi(class="form-control" + (" is-invalid" if form.deskripsi.errors else ""), rows=3) }}
+            {% for err in form.deskripsi.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          {{ form.submit(class="btn btn-success w-100") }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Daftar Produk Aktif</div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>Harga</th>
+              <th>Stok</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in daftar_produk %}
+            <tr>
+              <td>{{ item.nama }}</td>
+              <td class="text-capitalize">{{ item.kategori }}</td>
+              <td>Rp {{ "{:,}".format(item.harga) }}</td>
+              <td>{{ item.stok }}</td>
+              <td>{{ item.deskripsi }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

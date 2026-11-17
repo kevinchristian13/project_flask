@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Form Pemesanan{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white fw-semibold">Form Pemesanan Produk</div>
+      <div class="card-body">
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }} <!-- Token CSRF -->
+
+          <div class="mb-3">
+            {{ form.nama_pemesan.label(class="form-label") }}
+            {{ form.nama_pemesan(class="form-control" + (" is-invalid" if form.nama_pemesan.errors else "")) }}
+            {% for err in form.nama_pemesan.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+            {% for err in form.email.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.produk.label(class="form-label") }}
+            {{ form.produk(class="form-select") }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.jumlah.label(class="form-label") }}
+            {{ form.jumlah(class="form-control" + (" is-invalid" if form.jumlah.errors else "")) }}
+            {% for err in form.jumlah.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.catatan.label(class="form-label") }}
+            {{ form.catatan(class="form-control" + (" is-invalid" if form.catatan.errors else ""), rows=3) }}
+            {% for err in form.catatan.errors %}
+              <div class="invalid-feedback">{{ err }}</div>
+            {% endfor %}
+          </div>
+
+          {{ form.submit(class="btn btn-primary w-100") }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Riwayat Pesanan Masuk</div>
+      <div class="card-body">
+        {% if daftar_pesanan %}
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Pemesan</th>
+                <th>Email</th>
+                <th>Produk</th>
+                <th>Jumlah</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in daftar_pesanan %}
+              <tr>
+                <td>{{ p.nama_pemesan }}</td>
+                <td>{{ p.email }}</td>
+                <td>{{ p.produk }}</td>
+                <td>{{ p.jumlah }}</td>
+                <td>{{ p.catatan }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="text-muted mb-0">Belum ada pesanan masuk.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
